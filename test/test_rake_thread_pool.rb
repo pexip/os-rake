@@ -1,5 +1,6 @@
-require File.expand_path('../helper', __FILE__)
-require 'rake/thread_pool'
+# frozen_string_literal: true
+require File.expand_path("../helper", __FILE__)
+require "rake/thread_pool"
 
 class TestRakeTestThreadPool < Rake::TestCase
   include Rake
@@ -25,9 +26,7 @@ class TestRakeTestThreadPool < Rake::TestCase
         sleep 0.1
         Thread.current
       }
-    }.each { |f|
-      f.value
-    }
+    }.each(&:value)
 
     refute_equal threads[0], threads[1]
     refute_equal Thread.current, threads[0]
@@ -111,7 +110,7 @@ class TestRakeTestThreadPool < Rake::TestCase
       }
     }
 
-    common_dependency_b = pool.future { futures_a.each { |f| f.value } }
+    common_dependency_b = pool.future { futures_a.each(&:value) }
     futures_b = 10.times.map {
       pool.future {
         common_dependency_b.value
@@ -119,7 +118,7 @@ class TestRakeTestThreadPool < Rake::TestCase
       }
     }
 
-    futures_b.each { |f| f.value }
+    futures_b.each(&:value)
     pool.join
   end
 

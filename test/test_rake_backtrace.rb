@@ -1,5 +1,6 @@
-require File.expand_path('../helper', __FILE__)
-require 'open3'
+# frozen_string_literal: true
+require File.expand_path("../helper", __FILE__)
+require "open3"
 
 class TestBacktraceSuppression < Rake::TestCase
   def test_bin_rake_suppressed
@@ -11,7 +12,7 @@ class TestBacktraceSuppression < Rake::TestCase
   end
 
   def test_system_dir_suppressed
-    path = RbConfig::CONFIG['rubylibprefix']
+    path = RbConfig::CONFIG["rubylibprefix"]
     skip if path.nil?
     path = File.expand_path path
 
@@ -23,7 +24,7 @@ class TestBacktraceSuppression < Rake::TestCase
   end
 
   def test_near_system_dir_isnt_suppressed
-    path = RbConfig::CONFIG['rubylibprefix']
+    path = RbConfig::CONFIG["rubylibprefix"]
     skip if path.nil?
     path = File.expand_path path
 
@@ -41,7 +42,7 @@ class TestRakeBacktrace < Rake::TestCase
   def setup
     super
 
-    skip 'tmpdir is suppressed in backtrace' if
+    skip "tmpdir is suppressed in backtrace" if
       Rake::Backtrace::SUPPRESS_PATTERN =~ Dir.pwd
   end
 

@@ -1,5 +1,6 @@
-require File.expand_path('../helper', __FILE__)
-require 'stringio'
+# frozen_string_literal: true
+require File.expand_path("../helper", __FILE__)
+require "stringio"
 
 class TestRakeExtension < Rake::TestCase
 
@@ -28,7 +29,6 @@ class TestRakeExtension < Rake::TestCase
         end
       end
     end
-
 
     DUP_ERRS = error_redirect do
       rake_extension("duplicate_method") do

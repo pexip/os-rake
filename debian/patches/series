@@ -1,4 +1,3 @@
-0001-remove_rubygems.patch
-skip_permission_test.patch
-autopkgtest.patch
-skip-rake-libdir.patch
+0001-test-helper-adapt-to-test-installed-package.patch
+0002-rake-testtask-never-include-I-usr-lib-ruby-vendor_ru.patch
+0003-gemspec-drop-git-usage.patch

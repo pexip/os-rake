@@ -1,0 +1,20 @@
+From: Antonio Terceiro <terceiro@debian.org>
+Date: Thu, 29 Jun 2017 10:07:13 -0300
+Subject: gemspec: drop git usage
+Last-Review: 2018-03-23 Georg Faerber <georg@riseup.net>
+
+---
+ rake.gemspec | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/rake.gemspec
++++ b/rake.gemspec
+@@ -23,7 +23,7 @@
+   s.homepage = "https://github.com/ruby/rake".freeze
+   s.licenses = ["MIT".freeze]
+ 
+-  s.files = %x[git ls-files -z].split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) } -
++  s.files = Dir['**/*'].reject { |f| File.directory?(f) || f.match(%r{^(debian|test|spec|features)/}) } -
+             %w[.rubocop.yml .travis.yml appveyor.yml]
+   s.bindir = "exe"
+   s.executables = s.files.grep(%r{^exe/}) { |f| File.basename(f) }

@@ -1,4 +1,5 @@
-require 'rake/file_utils'
+# frozen_string_literal: true
+require "rake/file_utils"
 
 module Rake
   #
@@ -22,10 +23,10 @@ module Rake
       opts = FileUtils.options_of name
       default_options = []
       if opts.include?("verbose")
-        default_options << ':verbose => FileUtilsExt.verbose_flag'
+        default_options << ":verbose => FileUtilsExt.verbose_flag"
       end
       if opts.include?("noop")
-        default_options << ':noop => FileUtilsExt.nowrite_flag'
+        default_options << ":noop => FileUtilsExt.nowrite_flag"
       end
 
       next if default_options.empty?

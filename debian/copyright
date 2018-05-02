@@ -1,20 +1,20 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: rake
-Upstream-Contact: Jim Weirich <jim@weirichhouse.org>
-Source: https://github.com/jimweirich/rake
+Upstream-Contact: Hiroshi SHIBATA and Eric Hodel
+Source: https://github.com/ruby/rake
 
 Files: *
-Copyright: 2003-2014 Jim Weirich
-License: Expat
-
-Files: lib/rake/alt_system.rb
-Copyright: 2008 James M. Lawrence
+Copyright: © Jim Weirich
 License: Expat
 
 Files: debian/*
-Copyright: 2014 Caitlin Matos <caitlin.maots@zoho.com>
-           2011-2014 Antonio Terceiro <terceiro@debian.org>
-           2011 Ondřej Surý <ondrej@debian.org>
+Copyright: 2018 Georg Faerber <georg@riseup.net>
+           2015 Christian Hofstaedtler <christian@hofstaedtler.name>
+           2014 Caitlin Matos <caitlin.maots@zoho.com>
+           2013-2016 Cédric Boutillier <boutil@debian.org>
+           2011-2017 Antonio Terceiro <terceiro@debian.org>
+           2011-2014 Ondřej Surý <ondrej@debian.org>
+           2011-2012 Paul van Tilburg <paul@luon.net>
 License: Expat
 
 License: Expat
