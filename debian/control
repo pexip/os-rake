@@ -1,8 +1,9 @@
 Source: rake
 Section: ruby
 Priority: optional
-Maintainer: Debian Ruby Extras Maintainers <pkg-ruby-extras-maintainers@lists.alioth.debian.org>
-Uploaders: Antonio Terceiro <terceiro@debian.org>,
+Maintainer: Pexip AS <packaging@pexip.com>
+XSBC-Pexip-Original-Maintainer: Debian Ruby Extras Maintainers <pkg-ruby-extras-maintainers@lists.alioth.debian.org>
+XSBC-Pexip-Original-Uploaders: Antonio Terceiro <terceiro@debian.org>,
            Paul van Tilburg <paulvt@debian.org>,
            Caitlin Matos <caitlin.matos@zoho.com>
 Build-Depends: debhelper (>= 9),
@@ -17,6 +18,7 @@ Vcs-Browser: https://anonscm.debian.org/gitweb/cgit/pkg-ruby-extras/rake.git
 Homepage: https://github.com/jimweirich/rake
 XS-Ruby-Versions: all
 Testsuite: autopkgtest
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ stretch
 
 Package: rake
 Architecture: all
