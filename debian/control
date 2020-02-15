@@ -18,7 +18,7 @@ Vcs-Browser: https://anonscm.debian.org/gitweb/cgit/pkg-ruby-extras/rake.git
 Homepage: https://github.com/jimweirich/rake
 XS-Ruby-Versions: all
 Testsuite: autopkgtest
-XS-Pexip-Upstream: http://ftp.debian.org/debian/ stretch
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ buster
 
 Package: rake
 Architecture: all
