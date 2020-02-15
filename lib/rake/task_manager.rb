@@ -1,13 +1,10 @@
+# frozen_string_literal: true
 module Rake
 
   # The TaskManager module is a mixin for managing tasks.
   module TaskManager
     # Track the last comment made in the Rakefile.
     attr_accessor :last_description
-
-    # TODO: Remove in Rake 11
-
-    alias :last_comment :last_description # :nodoc: Backwards compatibility
 
     def initialize # :nodoc:
       super
@@ -19,7 +16,7 @@ module Rake
 
     def create_rule(*args, &block) # :nodoc:
       pattern, args, deps = resolve_args(args)
-      pattern = Regexp.new(Regexp.quote(pattern) + '$') if String === pattern
+      pattern = Regexp.new(Regexp.quote(pattern) + "$") if String === pattern
       @rules << [pattern, args, deps, block]
     end
 
@@ -28,7 +25,7 @@ module Rake
 
       original_scope = @scope
       if String === task_name and
-         not task_class.ancestors.include? Rake::FileTask then
+         not task_class.ancestors.include? Rake::FileTask
         task_name, *definition_scope = *(task_name.split(":").reverse)
         @scope = Scope.make(*(definition_scope + @scope.to_a))
       end
@@ -59,7 +56,25 @@ module Rake
       self.lookup(task_name, scopes) or
         enhance_with_matching_rule(task_name) or
         synthesize_file_task(task_name) or
-        fail "Don't know how to build task '#{task_name}' (see --tasks)"
+        fail generate_message_for_undefined_task(task_name)
+    end
+
+    def generate_message_for_undefined_task(task_name)
+      message = "Don't know how to build task '#{task_name}' (see --tasks)"
+      message + generate_did_you_mean_suggestions(task_name)
+    end
+
+    def generate_did_you_mean_suggestions(task_name)
+      return "" unless defined?(::DidYouMean::SpellChecker)
+
+      suggestions = ::DidYouMean::SpellChecker.new(dictionary: @tasks.keys).correct(task_name.to_s)
+      if ::DidYouMean.respond_to?(:formatter)# did_you_mean v1.2.0 or later
+        ::DidYouMean.formatter.message_for(suggestions)
+      elsif defined?(::DidYouMean::Formatter) # before did_you_mean v1.2.0
+        ::DidYouMean::Formatter.new(suggestions).to_s
+      else
+        ""
+      end
     end
 
     def synthesize_file_task(task_name) # :nodoc:
@@ -130,8 +145,8 @@ module Rake
       fail Rake::RuleRecursionOverflowError,
         "Rule Recursion Too Deep" if level >= 16
       @rules.each do |pattern, args, extensions, block|
-        if pattern.match(task_name)
-          task = attempt_rule(task_name, args, extensions, block, level)
+        if pattern && pattern.match(task_name)
+          task = attempt_rule(task_name, pattern, args, extensions, block, level)
           return task if task
         end
       end
@@ -171,10 +186,10 @@ module Rake
       task_name = task_name.to_s
       if task_name =~ /^rake:/
         scopes = Scope.make
-        task_name = task_name.sub(/^rake:/, '')
+        task_name = task_name.sub(/^rake:/, "")
       elsif task_name =~ /^(\^+)/
         scopes = initial_scope.trim($1.size)
-        task_name = task_name.sub(/^(\^+)/, '')
+        task_name = task_name.sub(/^(\^+)/, "")
       else
         scopes = initial_scope
       end
@@ -245,8 +260,8 @@ module Rake
     end
 
     # Attempt to create a rule given the list of prerequisites.
-    def attempt_rule(task_name, args, extensions, block, level)
-      sources = make_sources(task_name, extensions)
+    def attempt_rule(task_name, task_pattern, args, extensions, block, level)
+      sources = make_sources(task_name, task_pattern, extensions)
       prereqs = sources.map { |source|
         trace_rule level, "Attempting Rule #{task_name} => #{source}"
         if File.exist?(source) || Rake::Task.task_defined?(source)
@@ -260,14 +275,14 @@ module Rake
           return nil
         end
       }
-      task = FileTask.define_task(task_name, {args => prereqs}, &block)
+      task = FileTask.define_task(task_name, { args => prereqs }, &block)
       task.sources = prereqs
       task
     end
 
     # Make a list of sources from the list of file name extensions /
     # translation procs.
-    def make_sources(task_name, extensions)
+    def make_sources(task_name, task_pattern, extensions)
       result = extensions.map { |ext|
         case ext
         when /%/
@@ -275,7 +290,8 @@ module Rake
         when %r{/}
           ext
         when /^\./
-          task_name.ext(ext)
+          source = task_name.sub(task_pattern, ext)
+          source == ext ? task_name.ext(ext) : source
         when String
           ext
         when Proc, Method

@@ -1,4 +1,5 @@
-require File.expand_path('../helper', __FILE__)
+# frozen_string_literal: true
+require File.expand_path("../helper", __FILE__)
 
 class TestRakeTaskArgumentParsing < Rake::TestCase
   def setup
@@ -33,6 +34,12 @@ class TestRakeTaskArgumentParsing < Rake::TestCase
 
   def test_can_handle_spaces_between_args
     name, args = @app.parse_task_string("name[one, two,\tthree , \tfour]")
+    assert_equal "name", name
+    assert_equal ["one", "two", "three", "four"], args
+  end
+
+  def test_can_handle_spaces_between_all_args
+    name, args = @app.parse_task_string("name[ one , two ,\tthree , \tfour ]")
     assert_equal "name", name
     assert_equal ["one", "two", "three", "four"], args
   end
@@ -95,21 +102,19 @@ class TestRakeTaskArgumentParsing < Rake::TestCase
   end
 
   def test_no_rakeopt
-    ARGV << '--trace'
     app = Rake::Application.new
-    app.init
+    app.init %w[--trace]
     assert !app.options.silent
   end
 
   def test_rakeopt_with_blank_options
-    ARGV << '--trace'
     app = Rake::Application.new
-    app.init
+    app.init %w[--trace]
     assert !app.options.silent
   end
 
   def test_rakeopt_with_silent_options
-    ENV['RAKEOPT'] = '-s'
+    ENV["RAKEOPT"] = "-s"
     app = Rake::Application.new
 
     app.init
