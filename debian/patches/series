@@ -1,3 +1,4 @@
 0001-test-helper-adapt-to-test-installed-package.patch
 0002-rake-testtask-never-include-I-usr-lib-ruby-vendor_ru.patch
 0003-gemspec-drop-git-usage.patch
+CVE-2020-8130.patch
