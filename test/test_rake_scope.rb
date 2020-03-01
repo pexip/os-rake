@@ -1,4 +1,5 @@
-require File.expand_path('../helper', __FILE__)
+# frozen_string_literal: true
+require File.expand_path("../helper", __FILE__)
 
 class TestRakeScope < Rake::TestCase
   include Rake

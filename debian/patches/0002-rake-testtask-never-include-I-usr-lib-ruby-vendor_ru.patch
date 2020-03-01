@@ -1,0 +1,39 @@
+From: Antonio Terceiro <terceiro@debian.org>
+Date: Tue, 27 Jun 2017 18:13:51 -0300
+Subject: rake/testtask: never include -I/usr/lib/ruby/vendor_ruby
+
+---
+ lib/rake/testtask.rb        | 7 +------
+ test/test_rake_test_task.rb | 1 +
+ 2 files changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/lib/rake/testtask.rb b/lib/rake/testtask.rb
+index 5376275..c031271 100644
+--- a/lib/rake/testtask.rb
++++ b/lib/rake/testtask.rb
+@@ -199,12 +199,7 @@ module Rake
+     end
+ 
+     def rake_include_arg # :nodoc:
+-      spec = Gem.loaded_specs["rake"]
+-      if spec.respond_to?(:default_gem?) && spec.default_gem?
+-        ""
+-      else
+-        "-I\"#{rake_lib_dir}\""
+-      end
++      ""
+     end
+ 
+     def rake_lib_dir # :nodoc:
+diff --git a/test/test_rake_test_task.rb b/test/test_rake_test_task.rb
+index 396e059..d97ea6c 100644
+--- a/test/test_rake_test_task.rb
++++ b/test/test_rake_test_task.rb
+@@ -120,6 +120,7 @@ class TestRakeTestTask < Rake::TestCase
+   end
+ 
+   def test_run_code_rake
++    skip # disabled in Debian
+     spec = Gem::Specification.new "rake", 0
+     spec.loaded_from = File.join Gem::Specification.dirs.last, "rake-0.gemspec"
+     rake, Gem.loaded_specs["rake"] = Gem.loaded_specs["rake"], spec

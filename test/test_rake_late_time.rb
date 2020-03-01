@@ -1,4 +1,5 @@
-require File.expand_path('../helper', __FILE__)
+# frozen_string_literal: true
+require File.expand_path("../helper", __FILE__)
 
 class TestRakeLateTime < Rake::TestCase
   def test_late_time_comparisons
@@ -13,6 +14,6 @@ class TestRakeLateTime < Rake::TestCase
   end
 
   def test_to_s
-    assert_equal '<LATE TIME>', Rake::LATE.to_s
+    assert_equal "<LATE TIME>", Rake::LATE.to_s
   end
 end

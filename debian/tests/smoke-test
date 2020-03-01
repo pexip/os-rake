@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -eu
+
+cd "${AUTOPKGTEST_TMP:-/tmp}"
+mkdir rake-project
+cd rake-project
+cat > Rakefile <<EOF
+desc "greets the world"
+task :default do
+  puts "Hello, world!"
+end
+EOF
+
+set -x
+
+which rake
+rake --version
+rake --tasks
+rake

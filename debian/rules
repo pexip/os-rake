@@ -9,3 +9,6 @@ override_dh_clean:
 	$(RM) -r test/data/file_creation_task/build/
 	$(RM) -r test/data/file_creation_task/src/
 	dh_clean
+
+override_dh_installchangelogs:
+	dh_installchangelogs History.rdoc

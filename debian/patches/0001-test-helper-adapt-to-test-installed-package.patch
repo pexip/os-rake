@@ -1,0 +1,34 @@
+From: Antonio Terceiro <terceiro@debian.org>
+Date: Tue, 27 Jun 2017 18:11:53 -0300
+Subject: test/helper: adapt to test installed package
+
+These changes are necessary to run under Debian's autopkgtest, which is
+supposed to test the installed package (as opposed to testing the code
+in a source code checkout)
+---
+ test/helper.rb | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/test/helper.rb b/test/helper.rb
+index 949b635..e86aa28 100644
+--- a/test/helper.rb
++++ b/test/helper.rb
+@@ -34,9 +34,15 @@ class Rake::TestCase < Minitest::Test
+     @verbose = ENV["VERBOSE"]
+ 
+     @rake_root = File.expand_path "../../", __FILE__
+-    @rake_exec = File.join @rake_root, "exe", "rake"
+-    @rake_lib  = File.join @rake_root, "lib"
+-    @ruby_options = ["-I#{@rake_lib}", "-I."]
++    if ENV['ADTTMP']
++      @rake_exec = '/usr/bin/rake'
++      @rake_lib  = '/usr/lib/ruby/vendor_ruby'
++      @ruby_options = []
++    else
++      @rake_exec = File.join @rake_root, "exe", "rake"
++      @rake_lib  = File.join @rake_root, "lib"
++      @ruby_options = ["-I#{@rake_lib}", "-I."]
++    end
+ 
+     @orig_pwd = Dir.pwd
+     @orig_appdata      = ENV["APPDATA"]

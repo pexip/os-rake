@@ -1,5 +1,6 @@
-require 'rake/task.rb'
-require 'rake/early_time'
+# frozen_string_literal: true
+require "rake/task.rb"
+require "rake/early_time"
 
 module Rake
 
@@ -29,7 +30,14 @@ module Rake
 
     # Are there any prerequisites with a later time than the given time stamp?
     def out_of_date?(stamp)
-      @prerequisites.any? { |n| application[n, @scope].timestamp > stamp }
+      all_prerequisite_tasks.any? { |prereq|
+        prereq_task = application[prereq, @scope]
+        if prereq_task.instance_of?(Rake::FileTask)
+          prereq_task.timestamp > stamp || @application.options.build_all
+        else
+          prereq_task.timestamp > stamp
+        end
+      }
     end
 
     # ----------------------------------------------------------------
